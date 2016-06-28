@@ -11,23 +11,29 @@
 
 
 var ItemModel = Backbone.Model.extend({
-	// url : "https://openapi.etsy.com/v2/listings/active.js",
-	// _key:"b6devysg94wdkfnin8lck4yb",
+	url: function() {
+		return "https://openapi.etsy.com/v2/listings/" + this.itemId + ".js"
+	},
 
-	// parse: function(rawJSON){
-	// 	console.log("rawJSON-SingleView", rawJSON, rawJSON.results)
-	// 	return rawJSON.results
-	// },
+	_key:"b6devysg94wdkfnin8lck4yb",
 
-	// initialize: function(){
-	// 	this.url = this.url + "?api_key=" + this._key + "&callback=?"
-	// }
+	
+	parse: function(rawJSON){
+		console.log('parsed JSON')
+		console.log(rawJSON.results[0])
+		// console.log("rawJSON-SingleView", rawJSON, rawJSON.results[0])
+		return rawJSON.results[0]
+	},
+
+	initialize: function(listingId){
+		this.itemId = listingId
+	}
 
 })
 
 
 var MktCollection = Backbone.Collection.extend({	//collection of the marketing listing 
-	model: ItemModel,
+	// model: ItemModel,
 	url : "https://openapi.etsy.com/v2/listings/active.js",
 	_key:"b6devysg94wdkfnin8lck4yb",
 
@@ -56,9 +62,9 @@ var MktView = Backbone.View.extend({
 	},	 
 
 	_navToItem: function(evt){
-		console.log('currentTarget', evt.currentTarget)	//see if the correct target is being selected
+		// console.log('currentTarget', evt.currentTarget)	//see if the correct target is being selected
 		var clickItem = evt.currentTarget.getAttribute('id')
-		console.log(clickItem)
+		// console.log(clickItem)
 		window.location.hash = 'itemListing/' + clickItem
 
 	},
@@ -74,7 +80,7 @@ var MktView = Backbone.View.extend({
 			htmlStr += '<div class="itemContainer" id='+mArr.get('listing_id')+'>'
 			htmlStr += 		'<p>' + mArr.get('title') + '</p>'
 			htmlStr +=		'<img src="' + mArr.get('Images')[0].url_75x75 + '">'
-			htmlStr +=		'<p>' + mArr.get('listing_id') + '</p>'
+			htmlStr +=		'<p>' + "Item Id:" + mArr.get('listing_id') + '</p>'
 			htmlStr += 		'<p>' + "Price: $" + mArr.get('price') + '</p>'
 			htmlStr +=		'<p>' + "Quantity: " + mArr.get('quantity') + '</p>'
 			htmlStr += '</div>'	
@@ -101,22 +107,23 @@ var MktView = Backbone.View.extend({
 var SingleItemView = Backbone.View.extend({
 	el: "#container",
 
-	_buildTemplate: function(singleItemColl){
-		// console.log("singleItemColl",singleItemColl)
-		// var singleItem = singleItemColl.models[0].attributes
-		// var singleItem = singleItemColl.models[20]
-		var singleItem = singleItemColl.models
-			currentI = 0
-		console.log('singleItem', singleItem)
+	_buildTemplate: function(singleItemModel){
+		// console.log("singleItemModel",singleItemModel)
+		// var singleItem = singleItemModel.models[0].attributes
+		// var singleItem = singleItemModel.models[20]
+		// var singleItem = singleItemModel
+		var singleItem = singleItemModel
+			// currentI = 0
+		console.log('singleItemModel', singleItemModel)
 
 		var	htmlStr = '<div id="itemListing">'
 
-			htmlStr += 		'<p>' + singleItem[currentI].get('title') + '</p>'
-			htmlStr +=		'<img src="' + singleItem[currentI].get('Images')[0].url_75x75 + '">'
-			htmlStr += 		'<p>'+ singleItem[currentI].get('description')+'</p>'
-			htmlStr +=		'<p>' + singleItem[currentI].get('listing_id') + '</p>'
-			htmlStr += 		'<p>' + "Price: $" + singleItem[currentI].get('price') + '</p>'
-			htmlStr +=		'<p>' + "Quantity: " + singleItem[currentI].get('quantity') + '</p>'
+			htmlStr += 		'<p>' + singleItem.get('title') + '</p>'
+			htmlStr +=		'<img src="' + singleItem.get('Images')[0].url_75x75 + '">'
+			htmlStr += 		'<p>'+ singleItem.get('description')+'</p>'
+			htmlStr +=		'<p>' + "Item Id:" + singleItem.get('listing_id') + '</p>'
+			htmlStr += 		'<p>' + "Price: $" + singleItem.get('price') + '</p>'
+			htmlStr +=		'<p>' + "Quantity: " + singleItem.get('quantity') + '</p>'
 			htmlStr += '</div>'	
 
 		return htmlStr
@@ -125,13 +132,13 @@ var SingleItemView = Backbone.View.extend({
 
 
 	_render: function(){
-		this.el.innerHTML = this._buildTemplate(this.itemColl)
+		this.el.innerHTML = this._buildTemplate(this.itemMod)
 		// this.el.innerHTML = '<p>  this is the single view </p>'	//working single view render
 	
 	}, 
 
-	initialize: function(singleItemColl){
-		this.itemColl = singleItemColl
+	initialize: function(singleItemModel){
+		this.itemMod = singleItemModel
 	}
 
 
@@ -159,28 +166,22 @@ var MktRouter = Backbone.Router.extend({
 		"*default": "showMktView"
 	},
 
-	showItemView: function(listing_id){	
+	showItemView: function(itemId){	
  
-		// var itModel = new ItemModel(listing_id)
-		// console.log("itModel>>>", itModel) 
+		var singleItemModel = new ItemModel(itemId)
 
-		// itModel.fetch().then(function(){
-		// 	var itemView = new SingleItemView()	//going to have define SingleItemView!!1
-		// 		itemView._render
-		// })
-
-		var singleItemColl = new MktCollection("listing_id:" + listing_id)
-		singleItemColl.fetch({
+		singleItemModel.fetch({
+			dataType: 'jsonp',
 			data: {
 				includes: 'Images,Shop',
+				api_key: singleItemModel._key,
 			}
 		}).then(function(){
-			var itemView = new SingleItemView(singleItemColl)
+			var itemView = new SingleItemView(singleItemModel)
 			itemView._render()
 		})
 
 	},
-
 
 	//to show mkt listing on the market page with the hash change
 	showMktView: function(){
