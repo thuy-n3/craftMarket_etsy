@@ -9,7 +9,7 @@
 
 //listing# sample 269818178
 
-location.hash = 'home'
+// location.hash = 'home'
 var ItemModel = Backbone.Model.extend({
 	url: function() {
 		return "https://openapi.etsy.com/v2/listings/" + this.itemId + ".js"
@@ -41,7 +41,7 @@ var MktCollection = Backbone.Collection.extend({	//collection of the marketing l
 
 
 	parse: function(rawJSON){
-		// console.log("rawJSON", rawJSON, rawJSON.results)
+		console.log("rawJSON", rawJSON, rawJSON.results)
 		return rawJSON.results
 
 	},
@@ -57,8 +57,6 @@ var MktCollection = Backbone.Collection.extend({	//collection of the marketing l
 
 
 
-
-
 var MktView = Backbone.View.extend({
 	el: "#container", //selector where the data will be render for the view 
 
@@ -69,6 +67,7 @@ var MktView = Backbone.View.extend({
 	_navToItem: function(evt){
 		console.log('currentTarget', evt.currentTarget)	//see if the correct target is being selected
 		var clickItem = evt.currentTarget.getAttribute('id')
+		console.log("clickItem>>>>",clickItem)
 
 		console.log(clickItem)
 		window.location.hash = 'itemListing/' + clickItem
@@ -79,7 +78,7 @@ var MktView = Backbone.View.extend({
 		var htmlStr = ""
 
 		for(var i=0; i<modelArr.length; i++){
-			// console.log("modelArr", modelArr[i])
+			console.log("modelArr", modelArr[i])
 			var mArr = modelArr[i]
 			// console.log("Model Arr", mArr)
 
@@ -119,7 +118,7 @@ var SingleItemView = Backbone.View.extend({
 		// var singleItem = singleItemModel.models[20]
 		// var singleItem = singleItemModel
 		var singleItem = singleItemModel
-			// currentI = 0
+		
 		console.log('singleItemModel', singleItemModel)
 
 		var	htmlStr = '<div id="itemListing">'
@@ -209,7 +208,7 @@ var MktRouter = Backbone.Router.extend({
 		"itemListing/:listing_id" : "showItemView",
 		"search/:searchInput" : "showSearchView",
 		"market" : "showMktView",
-		"*default": "showMktView"
+		"*default": "reDirectToMkt"
 	},
 
 	// doItemSearch: function(searchInput){
@@ -229,6 +228,10 @@ var MktRouter = Backbone.Router.extend({
 
 	// }, 
 
+	reDirectToMkt: function(){
+		location.hash = 'market'
+	},
+	
 
 	showSearchView: function(searchInput){
 
@@ -253,7 +256,6 @@ var MktRouter = Backbone.Router.extend({
 
 	showItemView: function(itemId){	
 
- 
 		var singleItemModel = new ItemModel(itemId)
 
 		singleItemModel.fetch({

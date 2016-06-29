@@ -1,3 +1,6 @@
 .itemContainer{
 	border: solid 3px green;
+	margin: 5%;
+	max-width: 100%;
+
 }
