@@ -95,7 +95,6 @@ h1 {
 
 p.price{
 	flex: 2;
-	text-align: right;
 }
 
 p.shopName{
@@ -111,17 +110,15 @@ p.shopName{
 
 .mktContainer {
 	border: solid 2px blue;
-	margin: auto 0;
 	/* margin-top: 1%; */
 
 }
 
-.itemContainer{/* 
-	border: solid 3px purple */;
-	margin: 1%;
-	width: 31% ;
+.itemContainer{
+	border: solid 3px purple;
+	margin: 3%;
+	max-width: 25% ;
 	padding: 1%;
-	/* height: 500px; */
 }
 
 .listingImg{
@@ -134,12 +131,20 @@ p.shopName{
 
 .mktImgContainer {
 	/* max-width: 100%; */
-	/* border: solid 3px pink; */
+	border: solid 3px pink;
+}
+
+.introBlock{
+	border: solid 3px orange;
+	height: 500px;
+	max-width: 100%;
 }
 
 
 
 
+
+/* === mobile Style === */
 
 {/*======Single Item Listing======*/}
 
@@ -151,32 +156,34 @@ div#itemListing {
 
 
 /* @media window style */
-.onePic{
+/* .onePic{
 	display: inline-block;
 	max-width: 50%;
 	height: 300px;
 }
-
-.singleItemImg{
+ */
+/* .singleItemImg{
 	width: 400px;
 	height: 400px;
 	max-width: 100%;
 	border: solid 3px royalblue;
-	padding: 5%;
-	overflow: hidden;
+} */
 
-}
-
-
+/* 
 .buyBox{
 	border: solid 3px plum;
-	display: inline-block; 
-	width: 100%;
-	height: 400px;
-	padding: 2%;
 	max-width: 50%;
+	display: inline-block;
 	vertical-align: top;
+	height: 300px;
+}
+ */
 
+
+
+.singleItemImg{
+	max-width: 100%;
+	overflow: hidden;
 }
 
 
@@ -185,10 +192,43 @@ div#itemListing {
 
 }
 
-.itemDetails{
-	padding: 2%;
+/* @media styleing for 768px */
+
+
+
+
+/* @media styling for full size 1036px */
+
+{/*======Single Item Listing======*/}
+
+div#itemListing {
+    border:  solid 3px green;
+    max-width: 100%;
+    display: flex: ;
+ }
+
+
+/* @media window style */
+/* .onePic{
+	display: inline-block;
+	max-width: 50%;
+	height: 300px;
 }
+ */
+/* .singleItemImg{
+	width: 400px;
+	height: 400px;
+	max-width: 100%;
+	border: solid 3px royalblue;
+} */
 
-
-
+/* 
+.buyBox{
+	border: solid 3px plum;
+	max-width: 50%;
+	display: inline-block;
+	vertical-align: top;
+	height: 300px;
+}
+ */
 

@@ -10,9 +10,11 @@
 //listing# sample 269818178
 
 // location.hash = 'home'
-var ItemModel = Backbone.Model.extend({
-	url: function() {
-		return "https://openapi.etsy.com/v2/listings/" + this.itemId + ".js"
+var ItemModel = Backbone.Model.extend({	
+	url: function() {	//wrapping the url in a function because the url has 
+		//the string and the variable. With the function return the url already together
+
+		return "https://openapi.etsy.com/v2/listings/" + this.itemId + ".js"	
 	},
 	// url: 'https://openapi.etsy.com/v2/listings/' + this.itemId + '.js',
 	_key: "b6devysg94wdkfnin8lck4yb",
@@ -27,7 +29,7 @@ var ItemModel = Backbone.Model.extend({
 
 	},
 
-	initialize: function(listingId){
+	initialize: function(listingId){	//passing throught the listing id for the individual item
 		this.itemId = listingId
 		console.log(this.itemId)
 	}
@@ -77,19 +79,30 @@ var MktView = Backbone.View.extend({
 	_buildTemplate: function(modelArr){
 		var htmlStr = ""
 
+
+
+		htmlStr += '<div class="mktContainer align-children">'
+
 		for(var i=0; i<modelArr.length; i++){
 			console.log("modelArr", modelArr[i])
 			var mArr = modelArr[i]
-			// console.log("Model Arr", mArr)
-
-			htmlStr += '<div class="itemContainer" id='+mArr.get('listing_id')+'>'
-			htmlStr += 		'<p>' + mArr.get('title') + '</p>'
-			htmlStr +=		'<img src="' + mArr.get('Images')[0].url_75x75 + '">'
-			htmlStr +=		'<p>' + "Item Id:" + mArr.get('listing_id') + '</p>'
-			htmlStr += 		'<p>' + "Price: $" + mArr.get('price') + '</p>'
-			htmlStr +=		'<p>' + "Quantity: " + mArr.get('quantity') + '</p>'
+			console.log("Model Arr", mArr)
+			
+			htmlStr += '<div class="itemContainer " id='+mArr.get('listing_id')+'>'
+			htmlStr += 		'<div class="mktImgContainer">'
+			htmlStr +=			'<img class="listingImg" src="' + mArr.get('Images')[0].url_570xN + '">'
+			htmlStr += 		'</div>'
+			
+			htmlStr += 			'<p>' + mArr.get('title') + '</p>'
+			htmlStr += 		'<div class="itemInfo">'
+			htmlStr += 			'<p class="shopName">' + mArr.attributes.Shop.shop_name + '</p>'
+			htmlStr += 			'<p class="price">' + "$" + mArr.get('price') + '</p>'
+			htmlStr += 		'</div>'
 			htmlStr += '</div>'	
+
 		}
+
+		htmlStr += '</div>'
 
 		return htmlStr
 
@@ -121,15 +134,36 @@ var SingleItemView = Backbone.View.extend({
 		
 		console.log('singleItemModel', singleItemModel)
 
+
 		var	htmlStr = '<div id="itemListing">'
 
+			htmlStr += 	'<div class="onePic">'
+			htmlStr +=		'<img class="singleItemImg" src="' + singleItem.get('Images')[0].url_570xN + '">'
+			htmlStr +=	'</div>'
+
+
+
+			htmlStr += '<div class="buyBox">'
+			htmlStr += 		'<p class="shopName">' + singleItem.attributes.Shop.shop_name + '</p>'
 			htmlStr += 		'<p>' + singleItem.get('title') + '</p>'
-			htmlStr +=		'<img src="' + singleItem.get('Images')[0].url_75x75 + '">'
-			htmlStr += 		'<p>'+ singleItem.get('description')+'</p>'
 			htmlStr +=		'<p>' + "Item Id:" + singleItem.get('listing_id') + '</p>'
-			htmlStr += 		'<p>' + "Price: $" + singleItem.get('price') + '</p>'
+			htmlStr += 		'<p>' + "$" + singleItem.get('price') + '</p>'
 			htmlStr +=		'<p>' + "Quantity: " + singleItem.get('quantity') + '</p>'
-			htmlStr += '</div>'	
+			
+
+			htmlStr += 		'<div>'
+			htmlStr += 			'<a> <i class="fa fa-heart" aria-hidden="true"></i> </a>'
+			htmlStr +=			'<button>Add To Cart</button>'
+			htmlStr +=			'<a></a>'
+			htmlStr += 		'</div>'
+
+			htmlStr += '</div>'
+
+			htmlStr += '</div>'
+
+			htmlStr +=	'<div class="oneDetails">'
+			htmlStr += 		'<p class="itemDetails">'+ singleItem.get('description')+'</p>'
+			htmlStr += 	'</div>'
 
 		return htmlStr
 	},
@@ -210,23 +244,6 @@ var MktRouter = Backbone.Router.extend({
 		"market" : "showMktView",
 		"*default": "reDirectToMkt"
 	},
-
-	// doItemSearch: function(searchInput){
-
-	// 	var searchCollection = new MktCollection()
-	// 		searchCollection.fetch({
-	// 			dataType: 'jsonp', 
-	// 			data: {
-	// 				includes: 'Images,Shop',
-					
-	// 				keyword: searchItem
-	// 			}
-	// 		}).then(function(){
-	// 			var searchView = new MktView(MktCollection)
-	// 			searchView._render()
-	// 	})
-
-	// }, 
 
 	reDirectToMkt: function(){
 		location.hash = 'market'
