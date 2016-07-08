@@ -196,7 +196,7 @@ var SingleItemView = Backbone.View.extend({
 })
 
 var SearchView = Backbone.View.extend({
-	el: "#header",
+	el: ".searchContainer",
 
 	events: {
 
@@ -204,11 +204,11 @@ var SearchView = Backbone.View.extend({
 	},
 
 	_navSearchView: function(evt){
-		// console.log(evt.target.value)	//picks up what is typed in the search box 
+		console.log(evt.target.value)	//picks up what is typed in the search box 
 		if(evt.keyCode === 13){
 			console.log(evt.target.value)
 			var searchInput = evt.target.value
-			// console.log(searchInput)
+			console.log(searchInput)
 			location.hash = "search/" + searchInput
 			evt.target.value = ''
 		}
@@ -234,7 +234,6 @@ var SearchView = Backbone.View.extend({
 
 
 })
-
 
 
 var MktRouter = Backbone.Router.extend({
