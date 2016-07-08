@@ -73,6 +73,7 @@ p{
 	border: solid 3px purple;
 	font-size: 20px;
 	padding: 1%;
+	background: #F5F5F1;
 
 }
 
@@ -81,6 +82,7 @@ p{
 	font-size: 1em;
 	display: inline-block;
 	text-align: center;
+
 }
 
 h1 {
@@ -106,6 +108,17 @@ p.shopName{
 	font-size: 28px;
 	/* float: right; */
 }
+
+
+.introBlock {
+	border: solid 2px magenta;
+	height: 250px;
+	background: #F5F5F1;
+
+}
+
+
+
 
 {/*======Mkt Listing======*/}
 
