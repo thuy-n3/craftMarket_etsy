@@ -79,7 +79,13 @@ var MktView = Backbone.View.extend({
 	_buildTemplate: function(modelArr){
 		var htmlStr = ""
 
-
+		htmlStr += '<div class="introBlock">'
+		htmlStr += 		'<div class="giantFlower">'
+		htmlStr += 			'<img src="https://s-media-cache-ak0.pinimg.com/564x/d7/d0/b0/d7d0b0652b9ad14e4da2cfc45cd7b90c.jpg" />'
+		htmlStr += 		'</div>'
+		htmlStr +=		'<h1 class="introText">Whoever you are, find whatever you are into</h1>'
+		htmlStr += '</div>'
+	
 
 		htmlStr += '<div class="mktContainer align-children">'
 
